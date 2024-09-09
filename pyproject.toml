@@ -8,7 +8,7 @@ include = ["color*"]
 namespaces = true
 
 [project]
-name = "llm_proxy"
+name = "color-text"
 version = "0.0.1"
 description = "Package to print text with color"
 readme = "README.md"
@@ -27,9 +27,7 @@ classifiers = [
 ]
 
 urls = { Project = "https://https://github.com/AlbertoGonzalezOlmos/color-text" }
-dependencies = [
-
-]
+dependencies = []
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
