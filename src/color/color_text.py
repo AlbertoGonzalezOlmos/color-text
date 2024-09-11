@@ -7,7 +7,7 @@ from typing import Optional, Literal, List, Union
 3	Italic	Not widely supported. Sometimes treated as inverse or blink.[22]
 4	Underline	Style extensions exist for Kitty, VTE, mintty, iTerm2 and Konsole.[24][25][26]
 5	Slow blink	Sets blinking to less than 150 times per minute
-6	Rapid blink	MS-DOS ANSI.SYS, 150+ per minute; not widely supported
+
 7	Reverse video or invert	Swap foreground and background colors; inconsistent emulation[27][dubious – discuss]
 8	Conceal or hide	Not widely supported.
 9	Crossed-out, or strike	Characters legible but marked as if for deletion. Not supported in Terminal.app.
@@ -69,7 +69,7 @@ def c(
     s: Optional[Union[str, List[str]]] = None,
     df: Optional[List[int]] = None,
     db: Optional[List[int]] = None,
-    custom: Optional[Union[str, List[str]]] = None,
+    custom: Optional[Union[Union[str, int], Union[List[str], List[int]]]] = None,
 ) -> str:
     out_colored_string = ""
     start_sequence = "\x1b["
@@ -109,17 +109,18 @@ def c(
         for style in s:
             out_colored_string += start_sequence + predefined_styles[style] + "m"
     if custom:
-        if isinstance(custom, str):
+        if isinstance(custom, Union[str, int]):
             custom = [custom]
-        out_colored_string += start_sequence + custom
+        for custom_option in custom:
+            out_colored_string += start_sequence + str(custom_option) + "m"
 
-    reset_string = "\x1b[0m"
+    reset_string = start_sequence + "0m"
     return out_colored_string + t + reset_string
 
 
 def main():
     string = "\x1b[38;5;1mhola"
-    print(c("hola", s="italic", db=[255, 200, 30]))
+    print(c("hola", s="italic", df=[255, 200, 30], custom=[4, 2]))
 
     # Fore.red
     # '\x1b[38;5;1m'
