@@ -69,6 +69,7 @@ def c(
     s: Optional[Union[str, List[str]]] = None,
     df: Optional[List[int]] = None,
     db: Optional[List[int]] = None,
+    custom: Optional[Union[str, List[str]]] = None,
 ) -> str:
     out_colored_string = ""
     start_sequence = "\x1b["
@@ -95,9 +96,7 @@ def c(
                     should_raise = True
                 col_string += ";" + str(ic_round)
         if should_raise:
-            raise (
-                "Enter user defined colors as a list of 3 integers between 0 and 255"
-            )
+            raise ("Enter user defined colors as a list of 3 integers between 0 and 255")
 
         return col_string + "m"
 
@@ -109,6 +108,10 @@ def c(
             s = [s]
         for style in s:
             out_colored_string += start_sequence + predefined_styles[style] + "m"
+    if custom:
+        if isinstance(custom, str):
+            custom = [custom]
+        out_colored_string += start_sequence + custom
 
     reset_string = "\x1b[0m"
     return out_colored_string + t + reset_string
